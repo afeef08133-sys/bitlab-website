@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="BitLab builds practical business software, database systems, AI automation, and digital tools for local businesses.">
-  <title>BitLab — Practical technology for real businesses</title>
+  <title>BitLab — Technology for real businesses</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -30,123 +30,162 @@
 
   <main>
     <section class="hero">
+      <div class="hero-glow glow-one"></div>
+      <div class="hero-glow glow-two"></div>
+      <div class="hero-motion" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </div>
+
       <div class="hero-grid container">
         <div class="hero-copy">
-          <div class="eyebrow"><span class="dot"></span> Business technology, built locally</div>
-          <h1>Useful software for <span>real businesses.</span></h1>
+          <div class="eyebrow"><span class="dot"></span> Business technology, built around the work</div>
+
+          <h1>
+            We help businesses
+            <span class="flip-line" aria-live="polite">
+              <span class="flip-page" id="flipPage">
+                <span class="flip-word">organize data.</span>
+              </span>
+              <span class="flip-page flip-page-next" id="flipPageNext" aria-hidden="true">
+                <span class="flip-word"></span>
+              </span>
+            </span>
+          </h1>
+
           <p class="hero-text">
-            BitLab builds database systems, business tools, AI automations, and digital products
-            around the way your business actually works.
+            BitLab builds database systems, automations, AI tools, and digital products
+            around the way a business actually works.
           </p>
 
           <div class="hero-actions">
             <a class="button button-primary" href="#pharmacy">See a working product <span>→</span></a>
-            <a class="button button-quiet" href="#contact">Talk to BitLab</a>
+            <a class="button button-quiet" href="#solutions">What we do</a>
           </div>
 
           <div class="hero-proof">
             <div>
               <strong>01</strong>
-              <span>Practical systems</span>
+              <span>Data & systems</span>
             </div>
             <div>
               <strong>02</strong>
-              <span>Built around your workflow</span>
+              <span>Automation & AI</span>
             </div>
             <div>
               <strong>03</strong>
-              <span>Real working software</span>
+              <span>Digital products</span>
             </div>
           </div>
         </div>
 
-        <div class="hero-visual" aria-label="Abstract BitLab technology illustration">
-          <div class="visual-card card-back"></div>
-          <div class="visual-card card-mid"></div>
-          <div class="dashboard">
-            <div class="dash-top">
-              <div class="mini-logo">B</div>
-              <div class="dash-title">
-                <span>BITLAB SYSTEM</span>
-                <strong>Business overview</strong>
-              </div>
-              <div class="status"><i></i> Live</div>
+        <div class="hero-visual" aria-label="Animated examples of BitLab solutions">
+          <div class="hero-orbit orbit-one"></div>
+          <div class="hero-orbit orbit-two"></div>
+
+          <div class="system-stack">
+            <div class="system-card back">
+              <span class="system-number">03</span>
+              <span class="system-label">DIGITAL PRODUCT</span>
             </div>
-            <div class="dash-grid">
-              <div class="metric">
-                <span>Today's sales</span>
-                <strong>৳ 28,450</strong>
-                <small>+12.4%</small>
+
+            <div class="system-card middle">
+              <span class="system-number">02</span>
+              <span class="system-label">AI AUTOMATION</span>
+            </div>
+
+            <div class="system-card front" id="systemCard">
+              <img class="swap-graph" id="swapGraph" src="assets/images/growth%20curve%201.png" alt="" aria-hidden="true">
+              <div class="system-top">
+                <span class="system-number" id="systemNumber">01</span>
+                <span class="live-chip"><i></i> BUILDING</span>
               </div>
-              <div class="metric">
-                <span>Stock items</span>
-                <strong>1,284</strong>
-                <small>18 low</small>
+
+              <div class="system-icon data-icon" id="systemIcon" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
               </div>
-              <div class="chart">
-                <div class="chart-label"><span>Sales activity</span><b>7 days</b></div>
-                <div class="bars">
-                  <i style="height:34%"></i>
-                  <i style="height:48%"></i>
-                  <i style="height:42%"></i>
-                  <i style="height:67%"></i>
-                  <i style="height:55%"></i>
-                  <i style="height:82%"></i>
-                  <i style="height:94%"></i>
+
+              <p class="system-kicker" id="systemKicker">STRUCTURE</p>
+              <h2 id="systemTitle">Database systems</h2>
+              <p id="systemDescription">Turn scattered business information into something clear, searchable, and useful.</p>
+
+              <div class="system-footer">
+                <span id="systemFooter">01 / 04</span>
+                <div class="mini-bars" id="miniBars">
+                  <i></i><i></i><i></i><i></i>
                 </div>
-              </div>
-              <div class="activity">
-                <span>Recent activity</span>
-                <p><b>New sale</b><em>৳ 1,240</em></p>
-                <p><b>Stock added</b><em>42 items</em></p>
-                <p><b>Due collected</b><em>৳ 850</em></p>
               </div>
             </div>
           </div>
-          <div class="floating-tag"><span>●</span> Built for the real world</div>
+
+          <div class="floating-tag tag-top"><b>01</b> built around your workflow</div>
+          <div class="floating-tag tag-bottom"><span>✦</span> not a template</div>
         </div>
       </div>
     </section>
 
     <section class="section solutions" id="solutions">
       <div class="container">
-        <div class="section-heading">
+        <div class="solutions-intro">
           <div>
-            <p class="kicker">WHAT WE DO</p>
-            <h2>Technology that solves a business problem.</h2>
+            <p class="kicker">WHAT WE BUILD</p>
+            <div class="section-rule" aria-hidden="true"></div>
+            <h2>Practical technology<br>for real businesses.</h2>
           </div>
-          <p>
-            Not every business needs a huge platform. Sometimes it needs a well-designed
-            database, a better workflow, or one repetitive task taken off someone's hands.
-          </p>
+          <p>Each solution starts with the way work is actually done, then turns that work into something clearer, faster, or easier to manage.</p>
         </div>
 
-        <div class="solution-grid">
-          <article class="solution-card">
-            <div class="icon">01</div>
-            <h3>Database solutions</h3>
-            <p>Structured data systems that make business information easier to store, find, update, and understand.</p>
-            <a href="#contact">Build a system <span>↗</span></a>
-          </article>
-          <article class="solution-card featured">
-            <div class="icon">02</div>
-            <h3>AI automation</h3>
-            <p>Practical automation for repetitive workflows — using AI where it genuinely saves time or effort.</p>
-            <a href="#contact">Automate a task <span>↗</span></a>
-          </article>
-          <article class="solution-card">
-            <div class="icon">03</div>
-            <h3>Consultation</h3>
-            <p>Technical and business advice when you know what you want to improve but need help deciding how.</p>
-            <a href="#contact">Start a conversation <span>↗</span></a>
-          </article>
-          <article class="solution-card wide">
-            <div class="icon">04</div>
-            <div>
-              <h3>Take your shop online</h3>
-              <p>Go beyond a storefront website. Put inventory, sales, customer records, and everyday operations into a system designed for your business.</p>
+        <div class="solution-system">
+          <article class="solution-module solution-data">
+            <div class="module-copy">
+              <span class="module-number">01</span>
+              <p class="module-label">DATABASE SOLUTIONS</p>
+              <h3>Your business has data.<br>We make it useful.</h3>
+              <p>Bring sales, inventory, customers, purchases, and reports into a structured system you can search, understand, and act on.</p>
+              <a href="#contact">Build a data system <span>↗</span></a>
             </div>
-            <a href="#pharmacy">See the pharmacy example <span>↗</span></a>
+            <div class="module-visual data-visual">
+              <img src="assets/images/growth%20curve%201.png" alt="A growth chart illustrating structured business data">
+            </div>
+          </article>
+
+          <article class="solution-module solution-consult">
+            <div>
+              <span class="module-number">02</span>
+              <p class="module-label">CONSULTATION</p>
+              <h3>Make the next technical decision clearer.</h3>
+              <p>Practical advice for improving a workflow, choosing the right tool, or deciding what to build.</p>
+            </div>
+            <div class="decision-flow" aria-label="Question, analyze, decide">
+              <span>QUESTION</span><i></i><b>ANALYZE</b><i></i><span>DECIDE</span>
+            </div>
+          </article>
+
+          <article class="solution-module solution-automation">
+            <div>
+              <span class="module-number">03</span>
+              <p class="module-label">AI AUTOMATION</p>
+              <h3>Let repetitive work move itself.</h3>
+              <p>Connect the routine parts of a workflow, using AI where it genuinely saves time or effort.</p>
+            </div>
+            <div class="automation-flow" aria-label="Task flows through AI to two completed actions">
+              <span class="flow-input">TASK</span><i class="flow-line line-one"></i><b>AI</b><i class="flow-line line-two"></i><i class="flow-line line-three"></i><span class="flow-output output-one">DONE</span><span class="flow-output output-two">DONE</span>
+            </div>
+          </article>
+
+          <article class="solution-module solution-online">
+            <div class="online-copy">
+              <span class="module-number">04</span>
+              <p class="module-label">TAKE YOUR BUSINESS ONLINE</p>
+              <h3>Give everyday business work a digital system.</h3>
+              <p>Go beyond a storefront website. Bring sales, stock, customers, and reporting into tools that support the real operation.</p>
+              <a href="#pharmacy">See what we’ve built <span>→</span></a>
+            </div>
+            <div class="business-map" aria-label="A business system with sales, stock, customers and reports">
+              <b>YOUR BUSINESS</b>
+              <div><span>SALES</span><span>STOCK</span><span>CUSTOMERS</span><span>REPORTS</span></div>
+              <strong>DIGITAL SYSTEM</strong>
+            </div>
           </article>
         </div>
       </div>
