@@ -154,4 +154,75 @@ document.addEventListener("visibilitychange", () => {
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
+/* Draw the database module's chart from the supplied business-growth data. */
+const growthChart = document.getElementById("growthChart");
+const growthData = [
+  100, 108, 104, 119, 115, 107, 124, 132,
+  126, 139, 131, 145, 152, 143, 128, 136,
+  149, 157, 151, 164, 177, 169, 154, 161,
+  173, 188, 181, 193, 185, 171, 179, 196,
+  211, 203, 218, 207, 194, 202, 219, 231,
+  224, 241, 253, 239, 221, 234, 251, 268
+];
+
+if (growthChart) {
+  const chartWidth = 640;
+  const chartHeight = 360;
+  const padding = { top: 42, right: 34, bottom: 38, left: 42 };
+  const minValue = Math.min(...growthData) - 10;
+  const maxValue = Math.max(...growthData) + 10;
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
+  const points = growthData.map((value, index) => {
+    const x = padding.left + (index / (growthData.length - 1)) * plotWidth;
+    const y = padding.top + ((maxValue - value) / (maxValue - minValue)) * plotHeight;
+    return { x, y };
+  });
+  const pointList = points.map(point => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+  const areaPath = `M ${points[0].x.toFixed(1)} ${chartHeight - padding.bottom} L ${pointList.replaceAll(",", " ")} L ${points.at(-1).x.toFixed(1)} ${chartHeight - padding.bottom} Z`;
+  const gridLines = Array.from({ length: 5 }, (_, index) => {
+    const y = padding.top + (index / 4) * plotHeight;
+    return `<line class="growth-grid" x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" />`;
+  }).join("");
+  const dots = points.map((point, index) => `<circle class="growth-dot" cx="${point.x}" cy="${point.y}" r="${index === points.length - 1 ? 4 : 2.4}" style="transition-delay:${.55 + index * .13}s" />`).join("");
+
+  growthChart.innerHTML = `
+    <defs>
+      <linearGradient id="growthFill" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#ff7da7" stop-opacity=".62" />
+        <stop offset="100%" stop-color="#8e7dff" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    ${gridLines}
+    <line class="growth-axis" x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${chartHeight - padding.bottom}" />
+    <line class="growth-axis" x1="${padding.left}" y1="${chartHeight - padding.bottom}" x2="${chartWidth - padding.right}" y2="${chartHeight - padding.bottom}" />
+    <path class="growth-area" d="${areaPath}" />
+    <polyline class="growth-line" points="${pointList}" />
+    ${dots}
+  `;
+
+  const growthLine = growthChart.querySelector(".growth-line");
+  const lineLength = growthLine?.getTotalLength() || 0;
+  if (growthLine) {
+    growthLine.style.strokeDasharray = lineLength;
+    growthLine.style.strokeDashoffset = lineLength;
+  }
+
+  const chartPanel = growthChart.closest(".data-visual");
+  const showChart = () => chartPanel?.classList.add("chart-visible");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    showChart();
+  } else if ("IntersectionObserver" in window) {
+    const chartObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        showChart();
+        chartObserver.disconnect();
+      }
+    }, { threshold: .35 });
+    chartObserver.observe(chartPanel);
+  } else {
+    showChart();
+  }
+}
+
 // Replace DEMO_LINK_HERE in index.html when the public Shop 2 URL is ready.
