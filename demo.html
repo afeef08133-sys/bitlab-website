@@ -5,34 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <meta name="description" content="Explore the BitLab Pharmacy POS & Inventory demo — a mobile-first app you can try right in your browser.">
-  <title>Pharmacy POS Demo — BitLab</title>
+  <title>Demo — BitLab</title>
 
   <script>
     /*
-      The public Pharmacy demo shop (Shop 2 — no password, fictional data).
-      When the branded subdomain is live, change this ONE value to
-      "https://demo.bitlab.com" and keep it in sync with publicDemoProducts
-      in script.js.
+      PUBLIC DEMO SHOPS — mirrors publicDemoProducts in script.js.
 
-      Never point this at a real client shop. See website_shop_access_context.md.
+      Only public, no-password, fictional-data shops belong here. A real client
+      shop must never be added. See website_shop_access_context.md.
+
+      A product's url can be a branded subdomain (preferred, when a custom domain
+      slot is free) or its Railway-generated URL. Either way this page is the
+      stable, re-pointable address to put on printed material.
     */
-    window.BITLAB_DEMO_URL = "https://pharmacy-pos-pwa-production-2f29.up.railway.app";
+    window.BITLAB_DEMOS = {
+      pharmacy: {
+        name: "Pharmacy POS & Inventory",
+        url: "https://pharmacy.bitlabhq.com"
+      }
 
-    /*
-      Runs before any CSS, fonts, or markup are fetched. This matters most for
-      QR scans: a phone that lands here should bounce to the app immediately
-      rather than downloading a desktop shell it will never render.
-    */
-    window.BITLAB_WANTS_SHELL = window.matchMedia(
-      "(min-width: 1000px) and (pointer: fine) and (min-height: 561px)"
-    ).matches;
+      // salon: {
+      //   name: "Salon Booking & POS",
+      //   url: "https://salon-pos-pwa-production-xxxx.up.railway.app"
+      // },
+    };
 
-    if (!window.BITLAB_WANTS_SHELL) {
-      window.location.replace(window.BITLAB_DEMO_URL);
-    }
+    window.BITLAB_DEFAULT_DEMO = "pharmacy";
+
+    (function () {
+      var key = new URLSearchParams(window.location.search).get("p")
+        || window.BITLAB_DEFAULT_DEMO;
+
+      /* Unknown or missing ?p= falls back to the default rather than erroring —
+         a mistyped link should still land somewhere useful. */
+      var demo = window.BITLAB_DEMOS[key] || window.BITLAB_DEMOS[window.BITLAB_DEFAULT_DEMO];
+      window.BITLAB_DEMO = demo;
+
+      document.title = demo.name + " Demo — BitLab";
+
+      var hint = document.createElement("link");
+      hint.rel = "preconnect";
+      hint.href = demo.url;
+      hint.crossOrigin = "";
+      document.head.appendChild(hint);
+
+      /*
+        Runs before any CSS, fonts, or markup are fetched. This matters most for
+        QR scans: a phone that lands here should bounce to the app immediately
+        rather than downloading a desktop shell it will never render.
+      */
+      window.BITLAB_WANTS_SHELL = window.matchMedia(
+        "(min-width: 1000px) and (pointer: fine) and (min-height: 561px)"
+      ).matches;
+
+      if (!window.BITLAB_WANTS_SHELL) {
+        window.location.replace(demo.url);
+      }
+    })();
   </script>
 
-  <link rel="preconnect" href="https://pharmacy-pos-pwa-production-2f29.up.railway.app" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
@@ -117,7 +148,7 @@
 
     .device-wrap {
       position: relative;
-      transform-origin: center center;
+      transform-origin: top left;
       will-change: transform;
     }
     .device {
@@ -238,7 +269,7 @@
       <span class="logo-slot">B</span>
       <span>BitLab</span>
     </a>
-    <span class="bar-label">Pharmacy POS &amp; Inventory · Demo</span>
+    <span class="bar-label" id="barLabel">Demo</span>
 
     <div class="bar-actions">
       <a class="bar-link" href="/">← Back to site</a>
@@ -282,9 +313,14 @@
   </div>
 
   <script>
-    /* URL and shell decision are set by the head script, which runs first so
-       phones can redirect before any CSS or fonts are fetched. */
-    const demoAppUrl = window.BITLAB_DEMO_URL;
+    /* Product and shell decision are resolved by the head script, which runs
+       first so phones can redirect before any CSS or fonts are fetched. */
+    const demo = window.BITLAB_DEMO;
+    const demoAppUrl = demo.url;
+
+    document.getElementById("barLabel").textContent = demo.name + " · Demo";
+    document.getElementById("demoFrame")
+      .setAttribute("title", demo.name + " demo application");
 
     document.getElementById("fullScreenLink").href = demoAppUrl;
     document.getElementById("fallbackLink").href = demoAppUrl;
@@ -307,15 +343,33 @@
 
     /* Scale the 390x844 frame down to fit shorter laptop screens. The iframe's
        internal viewport stays 390x844, so the app's own breakpoints, 100vh, and
-       fixed positioning all behave exactly as they do on a phone. */
+       fixed positioning all behave exactly as they do on a phone.
+
+       transform: scale() is visual only — the element still occupies 390x844 in
+       layout — so the stage is allowed to scroll once the frame is scaled as far
+       down as it usefully goes. */
+    const MIN_SCALE = 0.55;
+
     function fitDevice() {
       const wrap = document.getElementById("deviceWrap");
       const stage = document.querySelector(".stage");
       if (!wrap || !stage) return;
 
       const available = stage.clientHeight - 48;
-      const scale = Math.min(1, available / 844);
+
+      /* Guard against a zero/negative measurement (layout not settled, tiny
+         window), which would otherwise flip or vanish the frame entirely. */
+      const raw = available > 0 ? available / 844 : 1;
+      const scale = Math.min(1, Math.max(MIN_SCALE, raw));
+
       wrap.style.transform = `scale(${scale.toFixed(3)})`;
+
+      /* Keep the scaled frame's layout box in step with its visible size, so
+         centring and scrolling reflect what the user actually sees. */
+      wrap.style.height = `${Math.round(844 * scale)}px`;
+      wrap.style.width = `${Math.round(390 * scale)}px`;
+
+      stage.style.overflowY = raw < MIN_SCALE ? "auto" : "hidden";
     }
 
     if (window.BITLAB_WANTS_SHELL) {

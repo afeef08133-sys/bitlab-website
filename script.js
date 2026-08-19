@@ -20,9 +20,10 @@ const nav = document.querySelector(".nav");
   Key = the value used in each link's data-demo-product="..." attribute.
 */
 const publicDemoProducts = {
-  pharmacy: "https://pharmacy-pos-pwa-production-2f29.up.railway.app"
+  pharmacy: "https://pharmacy.bitlabhq.com"
 
-  // Add the next public demo once it exists, e.g.:
+  // Add the next public demo once it exists. A branded subdomain is preferred,
+  // but a Railway-generated URL is fine — demo.html gives it a stable address:
   // salon: "https://salon-pos-pwa-production-xxxx.up.railway.app",
 };
 
@@ -30,9 +31,11 @@ const publicDemoProducts = {
   Products whose demo is shown inside the desktop phone shell (demo.html)
   instead of linking straight to the shop URL. The shell redirects mobile
   visitors on to the real app, so the URL above stays the source of truth.
+
+  Keep these keys in sync with BITLAB_DEMOS in demo.html.
 */
 const framedDemoPages = {
-  pharmacy: "demo.html"
+  pharmacy: "demo.html?p=pharmacy"
 };
 
 document.querySelectorAll("[data-demo-product]").forEach(link => {
