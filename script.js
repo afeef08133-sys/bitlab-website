@@ -1,6 +1,59 @@
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
 
+/*
+  PUBLIC DEMO PRODUCTS — the ONLY place a shop URL should ever appear in this codebase.
+
+  Add an entry here ONLY for a shop that is meant to be freely explorable by
+  any website visitor: no password set on the shop itself, filled with
+  fictional/randomized data (this is how "Shop 2" works today).
+
+  NEVER add a real client shop link here, or anywhere else on the site.
+  Client shops are password-protected by the app itself and their link is
+  shared privately and directly with that client (WhatsApp, email, in
+  person) — never linked, listed, or referenced on the public website, not
+  even in an anonymized "who uses BitLab" showcase. The website does not
+  and should not know anything about client shops or authentication.
+
+  Full policy: website_shop_access_context.md
+
+  Key = the value used in each link's data-demo-product="..." attribute.
+*/
+const publicDemoProducts = {
+  pharmacy: "https://pharmacy-pos-pwa-production-2f29.up.railway.app"
+
+  // Add the next public demo once it exists, e.g.:
+  // salon: "https://salon-pos-pwa-production-xxxx.up.railway.app",
+};
+
+/*
+  Products whose demo is shown inside the desktop phone shell (demo.html)
+  instead of linking straight to the shop URL. The shell redirects mobile
+  visitors on to the real app, so the URL above stays the source of truth.
+*/
+const framedDemoPages = {
+  pharmacy: "demo.html"
+};
+
+document.querySelectorAll("[data-demo-product]").forEach(link => {
+  const productId = link.getAttribute("data-demo-product");
+  const url = publicDemoProducts[productId];
+  const exploreLabel = link.querySelector(".built-explore");
+
+  if (url) {
+    const framedPage = framedDemoPages[productId];
+    link.href = framedPage || url;
+    if (framedPage) link.removeAttribute("target");
+  } else {
+    // No public demo configured yet for this product — keep the card
+    // visible but inert, instead of shipping a dead "#" link.
+    link.removeAttribute("href");
+    link.setAttribute("aria-disabled", "true");
+    link.classList.add("built-product-soon");
+    if (exploreLabel) exploreLabel.textContent = "Coming soon";
+  }
+});
+
 menuToggle?.addEventListener("click", () => {
   const open = nav.classList.toggle("open");
   menuToggle.setAttribute("aria-expanded", open);
@@ -224,5 +277,3 @@ if (growthChart) {
     showChart();
   }
 }
-
-// Replace DEMO_LINK_HERE in index.html when the public Shop 2 URL is ready.

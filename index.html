@@ -21,7 +21,7 @@
 
       <nav class="nav" aria-label="Main navigation">
         <a href="#solutions">Solutions</a>
-        <a href="#pharmacy">Pharmacy PWA</a>
+        <a href="#pharmacy">Products</a>
         <a href="#approach">Approach</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -205,30 +205,46 @@
 
     <section class="section pharmacy" id="pharmacy">
       <div class="container">
-        <div class="product-shell">
-          <div class="product-copy">
-            <p class="kicker">A WORKING BITLAB PRODUCT</p>
-            <div class="product-badge">PHARMACY POS + INVENTORY PWA</div>
-            <h2>A pharmacy system built for the way pharmacies actually operate.</h2>
-            <p>
-              This isn't a mockup or a generic POS template. BitLab built a working PWA
-              specifically for pharmacies in Bangladesh — including the small details that
-              matter when medicines are bought, stocked, sold, and tracked in strips and loose units.
+        <div class="built-shell">
+          <div class="built-copy">
+            <p class="kicker">WHAT WE'VE BUILT</p>
+            <h2>Real software, built around real problems.</h2>
+            <p>A look at some of the systems and tools BitLab builds for businesses.</p>
+
+            <div class="built-products" aria-label="BitLab products">
+              <a class="built-product" data-demo-product="pharmacy" href="#" target="_blank" rel="noopener">
+                <span class="built-number">01</span>
+                <span class="built-product-info">
+                  <strong>Pharmacy POS &amp; Inventory</strong>
+                  <small>PWA · POS · Inventory</small>
+                </span>
+                <span class="built-explore">Explore <i>→</i></span>
+              </a>
+
+              <!--
+                To add the next public demo once it's ready:
+                1. Add its URL to `publicDemoProducts` in script.js.
+                2. Copy the block below and set data-demo-product to that same key.
+                Only add a product here if it is a public, no-password demo shop
+                with fictional data — never a real client shop. See
+                website_shop_access_context.md.
+
+              <a class="built-product" data-demo-product="salon" href="#" target="_blank" rel="noopener">
+                <span class="built-number">02</span>
+                <span class="built-product-info">
+                  <strong>Salon Booking & POS</strong>
+                  <small>PWA · Bookings · POS</small>
+                </span>
+                <span class="built-explore">Explore <i>→</i></span>
+              </a>
+              -->
+            </div>
+
+            <p class="built-note">
+              <span>NOTE</span>
+              The demo opens with fictional sample data, so explore freely — nothing you
+              change there belongs to a real business.
             </p>
-
-            <div class="feature-list">
-              <div><span>✓</span><strong>New Sale</strong><small>Cash, due, strip and loose-unit sales</small></div>
-              <div><span>✓</span><strong>Add Stock</strong><small>Purchases, discounts and bonus units</small></div>
-              <div><span>✓</span><strong>Inventory</strong><small>Live stock and low-stock tracking</small></div>
-              <div><span>✓</span><strong>Calibrate</strong><small>Reconcile recorded stock with the shelf</small></div>
-              <div><span>✓</span><strong>Customers & Due</strong><small>Customer records and credit balances</small></div>
-              <div><span>✓</span><strong>Reports</strong><small>Sales, profit and purchase reporting</small></div>
-            </div>
-
-            <div class="product-actions">
-              <a class="button button-primary" href="DEMO_LINK_HERE" target="_blank" rel="noopener">Try the live demo <span>↗</span></a>
-              <span class="demo-note">Public demo • fictional data • safe to explore</span>
-            </div>
           </div>
 
           <div class="product-screen">
@@ -261,6 +277,11 @@
       </div>
     </section>
 
+    <!--
+      MOVED TO THE PRODUCT ITSELF (shop.bitlab.com) — kept here, commented out,
+      in case any of this copy is wanted back on the marketing site later.
+      Its CSS is still in style.css under the "details" section.
+
     <section class="section details">
       <div class="container">
         <div class="detail-grid">
@@ -283,36 +304,66 @@
         </div>
       </div>
     </section>
+    -->
 
     <section class="section approach" id="approach">
       <div class="container">
         <div class="approach-head">
-          <p class="kicker">THE BITLAB APPROACH</p>
-          <h2>Start with the work.<br>Then build the technology.</h2>
+          <div>
+            <p class="kicker">THE BITLAB APPROACH</p>
+            <div class="section-rule" aria-hidden="true"></div>
+            <h2>Start with the work.<br>Then build the technology.</h2>
+          </div>
+          <p>Every system we build moves through the same four stages — starting from how the work is really done, and ending with something the business can actually run on.</p>
         </div>
         <div class="steps">
-          <div class="step"><span>01</span><h3>Understand</h3><p>We learn how the business actually works, including the parts that don't fit neatly into a standard software template.</p></div>
-          <div class="step"><span>02</span><h3>Structure</h3><p>We turn scattered information and repetitive processes into a clear system that can be managed.</p></div>
-          <div class="step"><span>03</span><h3>Build</h3><p>We create the database, application, automation, or digital workflow around that structure.</p></div>
-          <div class="step"><span>04</span><h3>Improve</h3><p>Real use reveals what needs changing. The system gets better as the business uses it.</p></div>
+          <article class="step">
+            <span class="step-number">01</span>
+            <div class="step-track" aria-hidden="true"><i></i></div>
+            <h3>Understand</h3>
+            <p>We learn how the business actually works, including the parts that don't fit neatly into a standard software template.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">02</span>
+            <div class="step-track" aria-hidden="true"><i></i></div>
+            <h3>Structure</h3>
+            <p>We turn scattered information and repetitive processes into a clear system that can be managed.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">03</span>
+            <div class="step-track" aria-hidden="true"><i></i></div>
+            <h3>Build</h3>
+            <p>We create the database, application, automation, or digital workflow around that structure.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">04</span>
+            <div class="step-track" aria-hidden="true"><i></i></div>
+            <h3>Improve</h3>
+            <p>Real use reveals what needs changing. The system gets better as the business uses it.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section proof">
-      <div class="container proof-inner">
-        <div>
-          <p class="kicker">REAL SOFTWARE, REAL USE</p>
-          <h2>The pharmacy PWA is already being used in the real world.</h2>
+    <section class="section upgrade">
+      <div class="container upgrade-inner">
+        <div class="upgrade-copy">
+          <p class="kicker">WHY CHANGE ANYTHING</p>
+          <h2>Paper, memory, and guesswork<br>can only carry a business so far.</h2>
         </div>
-        <div class="proof-stat">
-          <strong>1</strong>
-          <span>pilot pharmacy actively using the system</span>
+        <div class="upgrade-side">
+          <p>
+            Registers fill up. Stock counts drift. The person who remembers everything
+            takes a day off. Moving that work into a real system doesn't change how you
+            do business — it just stops the details from slipping.
+          </p>
+          <a class="button button-light" href="#contact">Upgrade how you work <span>→</span></a>
         </div>
-        <p class="proof-text">
-          The public demo uses fictional data and is intentionally open so you can explore the
-          product yourself. Private deployments and real customer data remain separate.
-        </p>
+        <div class="upgrade-shifts" aria-label="What changes when you move to a system">
+          <div><span>NOTEBOOK</span><i></i><b>DATABASE</b></div>
+          <div><span>MEMORY</span><i></i><b>RECORDS</b></div>
+          <div><span>GUESSWORK</span><i></i><b>REPORTS</b></div>
+        </div>
       </div>
     </section>
 

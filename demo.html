@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Explore the BitLab Pharmacy POS & Inventory demo — a mobile-first app you can try right in your browser.">
+  <title>Pharmacy POS Demo — BitLab</title>
+
+  <script>
+    /*
+      The public Pharmacy demo shop (Shop 2 — no password, fictional data).
+      When the branded subdomain is live, change this ONE value to
+      "https://demo.bitlab.com" and keep it in sync with publicDemoProducts
+      in script.js.
+
+      Never point this at a real client shop. See website_shop_access_context.md.
+    */
+    window.BITLAB_DEMO_URL = "https://pharmacy-pos-pwa-production-2f29.up.railway.app";
+
+    /*
+      Runs before any CSS, fonts, or markup are fetched. This matters most for
+      QR scans: a phone that lands here should bounce to the app immediately
+      rather than downloading a desktop shell it will never render.
+    */
+    window.BITLAB_WANTS_SHELL = window.matchMedia(
+      "(min-width: 1000px) and (pointer: fine) and (min-height: 561px)"
+    ).matches;
+
+    if (!window.BITLAB_WANTS_SHELL) {
+      window.location.replace(window.BITLAB_DEMO_URL);
+    }
+  </script>
+
+  <link rel="preconnect" href="https://pharmacy-pos-pwa-production-2f29.up.railway.app" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --violet: #8e7dff;
+      --pink: #ff7da7;
+      --gradient: linear-gradient(135deg, #8e7dff 0%, #ff7da7 100%);
+      --frame-w: 390px;
+      --frame-h: 844px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: #fff;
+      font-family: "Manrope", sans-serif;
+      background:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+        #0a0811;
+      background-size: 54px 54px, 54px 54px, auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .demo-bar {
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 0 26px;
+      min-height: 64px;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      background: rgba(10,8,17,.9);
+      backdrop-filter: blur(14px);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; letter-spacing: -.04em; }
+    .logo-slot {
+      display: grid; place-items: center;
+      width: 30px; height: 30px; border-radius: 9px;
+      background: var(--gradient); color: #fff;
+      font-family: "DM Mono", monospace; font-size: 15px;
+    }
+    .bar-label {
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,.14);
+      color: #b9b2cc;
+      font: 500 10px "DM Mono", monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .bar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .bar-link {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 10px 15px; border-radius: 10px;
+      font-size: 12px; font-weight: 800;
+      border: 1px solid rgba(255,255,255,.2);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .bar-link:hover { background: rgba(255,255,255,.08); transform: translateY(-1px); }
+    .bar-link.solid { border-color: transparent; background: var(--gradient); }
+    .bar-link.solid:hover { background: var(--gradient); filter: brightness(1.06); }
+
+    .stage {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px 20px;
+      position: relative;
+    }
+    .glow {
+      position: absolute; width: 420px; height: 420px; border-radius: 50%;
+      filter: blur(60px); opacity: .13; pointer-events: none;
+    }
+    .glow-a { background: #8e7dff; left: 14%; top: 6%; }
+    .glow-b { background: #ff7da7; right: 12%; bottom: 2%; }
+
+    .device-wrap {
+      position: relative;
+      transform-origin: center center;
+      will-change: transform;
+    }
+    .device {
+      position: relative;
+      width: var(--frame-w);
+      height: var(--frame-h);
+      padding: 10px;
+      border-radius: 46px;
+      background: #2b2540;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.09),
+        0 40px 90px rgba(0,0,0,.55);
+    }
+    .device::before,
+    .device::after {
+      content: "";
+      position: absolute;
+      right: -3px;
+      width: 3px;
+      border-radius: 0 3px 3px 0;
+      background: #3d3556;
+    }
+    .device::before { top: 168px; height: 62px; }
+    .device::after { top: 246px; height: 62px; }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 37px;
+      overflow: hidden;
+      background: #f8f7fc;
+    }
+    .screen iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .notch {
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 112px; height: 24px;
+      border-radius: 0 0 15px 15px;
+      background: #2b2540;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Shown only if the app refuses to be embedded (X-Frame-Options / CSP). */
+    .frame-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-content: center;
+      gap: 16px;
+      padding: 40px 32px;
+      text-align: center;
+      color: #2d264d;
+      background: #f8f7fc;
+      z-index: 3;
+    }
+    .frame-fallback.show { display: grid; }
+    .frame-fallback strong { font-size: 18px; letter-spacing: -.035em; }
+    .frame-fallback p { margin: 0; font-size: 12px; line-height: 1.7; color: #6b628a; }
+    .frame-fallback a {
+      justify-self: center;
+      padding: 12px 18px; border-radius: 10px;
+      background: var(--gradient); color: #fff;
+      font-size: 12px; font-weight: 800;
+    }
+
+    .side-note {
+      position: absolute;
+      left: 34px; bottom: 28px;
+      max-width: 250px;
+      color: #8f87a5;
+      font-size: 11px;
+      line-height: 1.7;
+    }
+    .side-note b {
+      display: block;
+      margin-bottom: 6px;
+      color: #ff9fc5;
+      font: 500 9px "DM Mono", monospace;
+      letter-spacing: .12em;
+    }
+
+    /* Tablets, touch laptops, and anything too short for a phone frame:
+       the shell stops being useful, so send people to the app itself. */
+    @media (max-width: 999px), (pointer: coarse), (max-height: 560px) {
+      .stage, .side-note { display: none; }
+      .redirect-note { display: grid; }
+    }
+    .redirect-note {
+      display: none;
+      flex: 1;
+      place-content: center;
+      gap: 14px;
+      padding: 40px 28px;
+      text-align: center;
+    }
+    .redirect-note p { margin: 0; color: #b9b2cc; font-size: 13px; line-height: 1.7; }
+    .redirect-note a {
+      justify-self: center;
+      padding: 13px 18px; border-radius: 10px;
+      background: var(--gradient); font-size: 13px; font-weight: 800;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="demo-bar">
+    <a class="brand" href="/" aria-label="BitLab home">
+      <span class="logo-slot">B</span>
+      <span>BitLab</span>
+    </a>
+    <span class="bar-label">Pharmacy POS &amp; Inventory · Demo</span>
+
+    <div class="bar-actions">
+      <a class="bar-link" href="/">← Back to site</a>
+      <a class="bar-link solid" id="fullScreenLink" href="#" target="_blank" rel="noopener">Open full screen ↗</a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
+
+    <div class="device-wrap" id="deviceWrap">
+      <div class="device">
+        <div class="screen">
+          <div class="notch" aria-hidden="true"></div>
+          <iframe
+            id="demoFrame"
+            title="Pharmacy POS and Inventory demo application"
+            allow="clipboard-write; fullscreen"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          <div class="frame-fallback" id="frameFallback">
+            <strong>The demo needs its own tab</strong>
+            <p>This app can't be displayed inside a frame, but it works normally on its own.</p>
+            <a id="fallbackLink" href="#" target="_blank" rel="noopener">Open the demo ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="side-note">
+      <b>SAMPLE DATA</b>
+      Everything in this demo is fictional. Explore freely — add sales, edit stock,
+      nothing here belongs to a real business.
+    </p>
+  </main>
+
+  <div class="redirect-note">
+    <p>Opening the demo…</p>
+    <a id="redirectLink" href="#">Tap here if it doesn't open</a>
+  </div>
+
+  <script>
+    /* URL and shell decision are set by the head script, which runs first so
+       phones can redirect before any CSS or fonts are fetched. */
+    const demoAppUrl = window.BITLAB_DEMO_URL;
+
+    document.getElementById("fullScreenLink").href = demoAppUrl;
+    document.getElementById("fallbackLink").href = demoAppUrl;
+    document.getElementById("redirectLink").href = demoAppUrl;
+
+    let frameLoaded = false;
+
+    function loadShell() {
+      const frame = document.getElementById("demoFrame");
+      if (!frame.src) frame.src = demoAppUrl;
+
+      frame.addEventListener("load", () => { frameLoaded = true; });
+
+      /* If the app sends X-Frame-Options / CSP frame-ancestors, the frame stays
+         blank instead of erroring. Offer the escape hatch rather than a dead box. */
+      setTimeout(() => {
+        if (!frameLoaded) document.getElementById("frameFallback").classList.add("show");
+      }, 6000);
+    }
+
+    /* Scale the 390x844 frame down to fit shorter laptop screens. The iframe's
+       internal viewport stays 390x844, so the app's own breakpoints, 100vh, and
+       fixed positioning all behave exactly as they do on a phone. */
+    function fitDevice() {
+      const wrap = document.getElementById("deviceWrap");
+      const stage = document.querySelector(".stage");
+      if (!wrap || !stage) return;
+
+      const available = stage.clientHeight - 48;
+      const scale = Math.min(1, available / 844);
+      wrap.style.transform = `scale(${scale.toFixed(3)})`;
+    }
+
+    if (window.BITLAB_WANTS_SHELL) {
+      loadShell();
+      fitDevice();
+      window.addEventListener("resize", fitDevice);
+    }
+  </script>
+</body>
+</html>
